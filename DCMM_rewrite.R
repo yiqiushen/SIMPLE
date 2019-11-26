@@ -6,7 +6,8 @@ library(foreach)
 library(doParallel)
 
 getG=function(i,j){
-  Sigma_2=L[,i,]%*%diag(sigma_hat[i,])%*%t(L[,i,])+L[,j,]%*%diag(sigma_hat[j,])%*%t(L[,j,])-sigma_hat[i,j]*L[,i,j]%*%t(L[,j,i])
+  Sigma_2=L[,i,]%*%diag(sigma_hat[i,])%*%t(L[,i,])+L[,j,]%*%diag(sigma_hat[j,])%*%t(L[,j,])-sigma_hat[i,j]*(L[,i,j]%*%t(L[,j,i])+L[,i,j]%*%t(L[,i,j]))
+  t(Y[i,]-Y[j,])%*%pinv(Sigma_2)%*%(Y[i,]-Y[j,])
   Gij=t(Y[i,]-Y[j,])%*%pinv(Sigma_2)%*%(Y[i,]-Y[j,])
   return(Gij)
 }
